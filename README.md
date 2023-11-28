@@ -265,3 +265,258 @@ mat5.displayMatrix();
 return 0;
 };
 ```
+## 5
+```cpp
+#include <iostream>
+#include <string.h>
+using namespace std;
+class Stud
+{
+private:
+std::string name;
+int rollNo;
+int age;
+public:
+Stud() : name("none"), rollNo(0), age(0)
+{
+cout << "Default Constructor Called" << endl;
+}
+Stud(string n, int r, int a) : name(n), rollNo(r), age(a)
+{
+cout << "\nMultiple Constructor Called" << endl;
+}
+Stud(const Stud &other) : name(other.name),rollNo(other.rollNo), age(other.age)
+{
+cout << "\nCopy Constructor Called" << endl;
+}
+Stud(string n, int r) : name(n), rollNo(r), age(0)
+{
+cout << "\nOverloaded Constructor Called" << endl;
+}
+~Stud()
+{
+cout << "\nDestructor Called for " << name << endl;
+}
+void displayInfo()
+{
+cout << "Name: " << name << ", Roll No: " << rollNo << ", Age: " << age << endl;
+}
+};
+int main()
+{
+Stud student1;
+student1.displayInfo();
+Stud student2("Alice", 101, 20);
+student2.displayInfo();
+Stud student3 = student2;
+student3.displayInfo();
+Stud student4("Bob", 102);
+student4.displayInfo();
+return 0;
+};
+```
+
+## 6
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+// Base class
+class Person {
+protected:
+string name;
+int age;
+public:
+Person(const string& name, int age) : name(name), age(age) {}
+virtual void displayInfo() {
+cout << "Name: " << name << ", Age: " << age << endl;
+}
+};
+class Account : virtual public Person {
+protected:
+string accountID;
+public:
+Account(const string& name, int age, const string& accID) : Person(name, age),
+accountID(accID) {}
+virtual void displayInfo() override {
+Person::displayInfo();
+cout << "Account ID: " << accountID << endl;
+}
+};
+class Admin : virtual public Person {
+protected:
+string adminRole;
+public:
+Admin(const string& name, int age, const string& role) : Person(name, age), adminRole(role)
+{}
+virtual void displayInfo() override {
+Person::displayInfo();
+cout << "Admin Role: " << adminRole << endl;
+}
+};
+class Master : public Account, public Admin {
+public:
+Master(const string& name, int age, const string& accID, const string& role)
+: Person(name, age), Account(name, age, accID), Admin(name, age, role) {}
+void displayInfo() override {
+Person::displayInfo();
+Account::displayInfo();
+Admin::displayInfo();
+}
+};
+int main() {
+Master master("John Doe", 30, "12345", "Administrator");
+cout << "Information in Master object:" << endl;
+master.displayInfo();
+return 0;
+};
+```
+## 7 
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+class Media
+{
+protected:
+string title;
+double price;
+public:
+Media(const string &t, double p) : title(t), price(p) {}
+virtual void display()
+{
+cout << "Title: " << title << "\nPrice: Rs." << price << endl;
+}
+};
+class Book : public Media
+{
+int numPages;
+public:
+Book(const string &t, double p, int pages) : Media(t, p), numPages(pages) {}
+void display() override
+{
+cout << "Book Details:\n";
+Media::display();
+cout << "Number of Pages: " << numPages << endl;
+}
+};
+class VideoTape : public Media
+{
+int playTime;
+public:
+VideoTape(const std::string &t, double p, int time) : Media(t, p), playTime(time) {}
+void display() override
+{
+cout << "Video Tape Details:\n";
+Media::display();
+cout << "Playing Time: " << playTime << " minutes" << endl;
+}
+};
+int main()
+{
+Media *items[3];
+items[0] = new Book("C++ Programming", 440, 500);
+items[1] = new VideoTape("Introduction to AI", 1200, 120);
+items[2] = new Book("Data Structures in C", 600, 980);
+for (int i = 0; i < 3; i++)
+{
+items[i]->display();
+cout << std::endl;
+delete items[i];
+}
+return 0;
+};
+```
+## 8 || new
+```cpp
+#include <iostream>
+using namespace std;
+class MyClass {
+public:
+MyClass(int value) : data(value) {
+cout << "Object created with value: " << data << endl;
+}
+void showValue() {
+cout << "Value of this object: " << this->data << endl;
+}
+void updateValue(int newValue) {
+this->data = newValue;
+}
+void releaseMemory() {
+delete this;
+}
+~MyClass() {
+cout << "Object destroyed with value: " << data << endl;
+}
+private:
+int data;
+};
+int main() {
+MyClass* obj1 = new MyClass(42);
+obj1->showValue();
+obj1->updateValue(100);
+obj1->showValue();
+obj1->releaseMemory();
+return 0;
+}
+```
+
+## 9 
+```cpp
+#include <iostream>
+using namespace std;
+template <typename T>
+T findMinimum(const T arr[], int size)
+{
+if (size <= 0)
+{
+cout << "Error: Array is empty or size is invalid." << endl;
+return T();
+}
+T min = arr[0];
+for (int i = 1; i < size; i++)
+{
+if (arr[i] < min)
+{
+min = arr[i];
+}
+}
+return min;
+}
+int main()
+{
+int intArr[] = {5, 2, 8, 1, 7};
+double doubleArr[] = {3.14, 2.71, 1.618, 0.577};
+int intMin = findMinimum(intArr, sizeof(intArr) / sizeof(intArr[0]));
+double doubleMin = findMinimum(doubleArr, sizeof(doubleArr)) / sizeof(doubleArr[0]);
+cout << "Minimum value in the integer array: " << intMin << endl;
+cout << "Minimum value in the double array: " << doubleMin << endl;
+return 0;
+};
+```
+
+## 10 try and error
+```cpp
+#include <iostream>
+using namespace std;
+int main() {
+int numerator, denominator, result;
+cout << "Enter numerator: ";
+cin >> numerator;
+cout << "Enter denominator: ";
+cin >> denominator;
+try {
+if (denominator == 0) {
+throw "Division by zero error not possible";
+}
+result = numerator / denominator;
+cout << "Result of division: " << result << endl;
+} catch (const char* errorMessage) {
+cout << "Error: " << errorMessage << endl;
+} catch (...) {
+cout << "An unexpected error occurred." << endl;
+}
+return 0;
+};
+```
+
